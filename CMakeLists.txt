@@ -17,17 +17,14 @@ include(cmake/CompilerWarnings.cmake)
 set_project_warnings(project_warnings)
 
 include(FetchContent)
+include(ExternalProject)
 
-FetchContent_Declare(googletest
-  GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG        release-1.11.0
-)
-
-set(BENCHMARK_ENABLE_TESTING off)
-FetchContent_Declare(googlebenchmark
-  GIT_REPOSITORY https://github.com/google/benchmark.git
-  GIT_TAG        v1.6.1)
-FetchContent_MakeAvailable(googletest googlebenchmark)
+include(modules/boost.cmake)
+# include(modules/fmt.cmake)
+include(modules/gbenchmark.cmake)
+include(modules/gtest.cmake)
+# include(modules/mgclient.cmake)
+include(modules/boost.cmake)
 
 add_executable(main main.cpp)
 target_link_libraries(main PRIVATE benchmark::benchmark)
