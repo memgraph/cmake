@@ -19,12 +19,11 @@ set_project_warnings(project_warnings)
 include(FetchContent)
 include(ExternalProject)
 
-include(modules/boost.cmake)
+include(modules/external-boost.cmake)
 # include(modules/fmt.cmake)
 include(modules/gbenchmark.cmake)
 include(modules/gtest.cmake)
 # include(modules/mgclient.cmake)
-include(modules/boost.cmake)
 
 add_executable(main main.cpp)
 target_link_libraries(main PRIVATE benchmark::benchmark)
