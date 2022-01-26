@@ -26,7 +26,7 @@ include(modules/gtest.cmake)
 # include(modules/mgclient.cmake)
 
 add_executable(main main.cpp)
-target_link_libraries(main PRIVATE benchmark::benchmark)
+target_link_libraries(main PRIVATE benchmark::benchmark boost_headers boost_chrono_static boost_thread_static)
 
 add_executable(gbenchmark gbenchmark.cpp)
 target_link_libraries(gbenchmark PRIVATE benchmark::benchmark)
