@@ -1,14 +1,14 @@
+set(BOOST_MODULES "" CACHE STRING "Picks Boost modules separated by space")
+if("${BOOST_MODULES}" STREQUAL "")
+  message(FATAL_ERROR "Some Boost modules have to be picked")
+endif()
+set(BOOST_GIT_TAG "boost-1.78.0" CACHE STRING "Boost git tag")
+
 set(boost_URL "https://github.com/boostorg/boost.git" )
-set(boost_REF "boost-1.78.0" )
 set(boost_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/third_party/boost)
 set(boost_INCLUDE_DIR ${Boost_INSTALL}/include)
 set(boost_LIB_DIR ${Boost_INSTALL}/lib)
 set(boost_LIBRARY_SUFFIX .a)
-
-set(BOOST_MODULES "" CACHE STRING "Picks Boost modules separated by space")
-if("${BOOST_MODULES}" STREQUAL "")
-  message(FATAL_ERROR "Some Boost modules have to be picked.")
-endif()
 
 string(REPLACE " " ";" BOOST_MODULES_LIST ${BOOST_MODULES})
 string(APPEND boost_CONFIGURED_MODULES "")
@@ -22,10 +22,11 @@ endforeach()
 
 ExternalProject_Add(boost-proj
   GIT_REPOSITORY ${boost_URL}
-  GIT_TAG ${boost_REF}
+  GIT_TAG ${BOOST_GIT_TAG}
   PREFIX boost-proj
   BUILD_IN_SOURCE 1
   INSTALL_DIR ${boost_INSTALL_DIR}
   CONFIGURE_COMMAND ./bootstrap.sh ${boost_CONFIGURED_MODULES} --prefix=<INSTALL_DIR>
   BUILD_COMMAND ./b2 install link=static variant=release threading=multi runtime-link=static
+  INSTALL_COMMAND ""
 )
