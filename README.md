@@ -18,7 +18,7 @@ target_link_libraries({{target}} PRIVATE boost_headers boost_thread_static)
 file(DOWNLOAD https://raw.githubusercontent.com/memgraph/cmake/main/modules/external-fmt.cmake
      ${CMAKE_BINARY_DIR}/external-fmt.cmake)
 include(${CMAKE_BINARY_DIR}/external-fmt.cmake)
-target_link_libraries({{target}} PRIVATE fmt_static)
+target_link_libraries({{target}} PRIVATE fmtlib_static)
 
 # mgclient
 file(DOWNLOAD https://raw.githubusercontent.com/memgraph/cmake/main/modules/external-mgclient.cmake

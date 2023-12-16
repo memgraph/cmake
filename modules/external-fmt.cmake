@@ -1,4 +1,4 @@
-set(FMTLIB_GIT_TAG "8.1.1" CACHE STRING "fmtlib git tag")
+set(FMTLIB_GIT_TAG "10.1.0" CACHE STRING "fmtlib git tag")
 
 set(fmtlib_INSTALL_DIR "${CMAKE_BINARY_DIR}/fmtlib-proj/install")
 file(MAKE_DIRECTORY ${fmtlib_INSTALL_DIR}/include)
