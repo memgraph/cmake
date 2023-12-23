@@ -23,7 +23,7 @@ include(ExternalProject)
 # include(modules/external-fmt.cmake)
 # include(modules/external-mgclient.cmake)
 include(modules/fetch-gbenchmark.cmake)
-# include(modules/fetch-gtest.cmake)
+include(modules/fetch-gtest.cmake)
 include(modules/fetch-nlohmann.cmake)
 
 add_executable(main main.cpp)
@@ -31,3 +31,8 @@ target_link_libraries(main PRIVATE nlohmann_json::nlohmann_json)
 
 add_executable(gbenchmark gbenchmark.cpp)
 target_link_libraries(gbenchmark PRIVATE benchmark::benchmark)
+
+enable_testing()
+add_executable(gtest_example gtest.cpp)
+target_link_libraries(gtest_example gtest gtest_main)
+add_test(NAME gtest_example COMMAND gtest_example)
