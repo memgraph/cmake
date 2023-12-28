@@ -14,7 +14,8 @@ ExternalProject_Add(cxxtantivy-proj
 
 ExternalProject_Get_Property(cxxtantivy-proj install_dir)
 set(CXXTANTIVY_ROOT ${install_dir})
-add_library(cxxtantivy_static STATIC IMPORTED)
-set_property(TARGET cxxtantivy_static PROPERTY IMPORTED_LOCATION ${CXXTANTIVY_ROOT}/lib/libcxxtantivy_rust.a)
-set_property(TARGET cxxtantivy_static PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${CXXTANTIVY_ROOT}/include)
-add_dependencies(cxxtantivy_static cxxtantivy-proj)
+message(STATUS ${CXXTANTIVY_ROOT})
+add_library(cxxtantivy_rust STATIC IMPORTED)
+set_property(TARGET cxxtantivy_rust PROPERTY IMPORTED_LOCATION ${CXXTANTIVY_ROOT}/lib/libcxxtantivy_rust.a)
+set_property(TARGET cxxtantivy_rust PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${CXXTANTIVY_ROOT}/include)
+add_dependencies(cxxtantivy_rust cxxtantivy-proj)

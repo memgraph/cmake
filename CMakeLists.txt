@@ -28,7 +28,7 @@ include(modules/fetch-gtest.cmake)
 include(modules/fetch-nlohmann.cmake)
 
 add_executable(main main.cpp)
-target_link_libraries(main PRIVATE nlohmann_json::nlohmann_json cxxtantivy_static)
+target_link_libraries(main PRIVATE nlohmann_json::nlohmann_json cxxtantivy_rust)
 
 add_executable(gbenchmark gbenchmark.cpp)
 target_link_libraries(gbenchmark PRIVATE benchmark::benchmark)
