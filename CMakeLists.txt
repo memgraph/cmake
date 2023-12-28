@@ -27,8 +27,11 @@ include(modules/fetch-gbenchmark.cmake)
 include(modules/fetch-gtest.cmake)
 include(modules/fetch-nlohmann.cmake)
 
+# TODO(gitbuda): The cxxtantivy include has to be implicitly included.
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/cxxtantivy/include)
 add_executable(main main.cpp)
-target_link_libraries(main PRIVATE nlohmann_json::nlohmann_json cxxtantivy_rust)
+# TODO(gitbuda): The two cxxtantivy / text search libaries have to be under one name.
+target_link_libraries(main PRIVATE nlohmann_json::nlohmann_json cxxtantivy_rust ${CMAKE_CURRENT_BINARY_DIR}/cxxtantivy/lib/libtext_search.a)
 
 add_executable(gbenchmark gbenchmark.cpp)
 target_link_libraries(gbenchmark PRIVATE benchmark::benchmark)
