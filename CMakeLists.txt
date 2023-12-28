@@ -20,6 +20,7 @@ include(FetchContent)
 include(ExternalProject)
 
 # include(modules/external-boost.cmake)
+include(modules/external-cxxtantivy.cmake)
 # include(modules/external-fmt.cmake)
 # include(modules/external-mgclient.cmake)
 include(modules/fetch-gbenchmark.cmake)
@@ -27,7 +28,7 @@ include(modules/fetch-gtest.cmake)
 include(modules/fetch-nlohmann.cmake)
 
 add_executable(main main.cpp)
-target_link_libraries(main PRIVATE nlohmann_json::nlohmann_json)
+target_link_libraries(main PRIVATE nlohmann_json::nlohmann_json cxxtantivy_static)
 
 add_executable(gbenchmark gbenchmark.cpp)
 target_link_libraries(gbenchmark PRIVATE benchmark::benchmark)
