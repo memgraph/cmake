@@ -7,6 +7,8 @@ PREFIX="$DIR/output"
 ARCHIVES="$DIR/archives"
 BUILD="$DIR/build"
 COMMON_CONFIGURE_FLAGS="--enable-shared=no --prefix=$PREFIX"
+GPG="gpg --homedir .gnupg"
+KEYSERVER="hkp://keyserver.ubuntu.com"
 mkdir -p "$ARCHIVES"
 mkdir -p "$BUILD"
 function log_tool_name () {
@@ -21,6 +23,13 @@ FLEX_VERSION=2.6.4
 pushd "$ARCHIVES"
 if [ ! -f flex-$FLEX_VERSION.tar.gz ]; then
     wget https://github.com/westes/flex/releases/download/v$FLEX_VERSION/flex-$FLEX_VERSION.tar.gz -O flex-$FLEX_VERSION.tar.gz
+fi
+if [ ! -f flex-$FLEX_VERSION.tar.gz.sig ]; then
+    wget https://github.com/westes/flex/releases/download/v$FLEX_VERSION/flex-$FLEX_VERSION.tar.gz.sig
+fi
+if false; then
+    $GPG --keyserver $KEYSERVER --recv-keys 0xE4B29C8D64885307
+    $GPG --verify flex-$FLEX_VERSION.tar.gz.sig flex-$FLEX_VERSION.tar.gz
 fi
 popd
 pushd "$BUILD"
