@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-
 project(mgcmake VERSION 0.1.0)
-
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 20)
 set(C_STANDARD_REQUIRED ON)
@@ -20,23 +18,24 @@ include(FetchContent)
 include(ExternalProject)
 
 # include(modules/external-boost.cmake)
-include(modules/external-cxxtantivy.cmake)
 # include(modules/external-fmt.cmake)
 # include(modules/external-mgclient.cmake)
-include(modules/fetch-gbenchmark.cmake)
-include(modules/fetch-gtest.cmake)
+
 include(modules/fetch-nlohmann.cmake)
+add_executable(json_example json.cpp)
+target_link_libraries(json_example PRIVATE nlohmann_json::nlohmann_json)
 
-# TODO(gitbuda): The cxxtantivy include has to be implicitly included.
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/cxxtantivy/include)
-add_executable(main main.cpp)
-# TODO(gitbuda): The two cxxtantivy / text search libaries have to be under one name.
-target_link_libraries(main PRIVATE nlohmann_json::nlohmann_json cxxtantivy_rust ${CMAKE_CURRENT_BINARY_DIR}/cxxtantivy/lib/libtext_search.a)
+include(modules/fetch-gbenchmark.cmake)
+add_executable(gbenchmark_example gbenchmark.cpp)
+target_link_libraries(gbenchmark_example PRIVATE benchmark::benchmark)
 
-add_executable(gbenchmark gbenchmark.cpp)
-target_link_libraries(gbenchmark PRIVATE benchmark::benchmark)
-
+include(modules/fetch-gtest.cmake)
 enable_testing()
 add_executable(gtest_example gtest.cpp)
 target_link_libraries(gtest_example gtest gtest_main)
 add_test(NAME gtest_example COMMAND gtest_example)
+
+include(modules/fetch-nlohmann.cmake)
+include(modules/external-mgcxx.cmake)
+add_executable(mgcxx_text_search_example mgcxx_text_search.cpp)
+target_link_libraries(mgcxx_text_search_example PRIVATE nlohmann_json::nlohmann_json mgcxx_text_search tantivy_text_search)
