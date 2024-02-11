@@ -1,5 +1,9 @@
 # Memgraph CMake
 
+## Hints
+
+To list all targets run `cmake --build . --target help`.
+
 This is a collection of CMake modules that are useful for all Memgraph
 projects.
 

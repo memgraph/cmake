@@ -45,13 +45,12 @@ target_link_libraries(mgcxx_text_search_example PRIVATE nlohmann_json::nlohmann_
 # include(modules/external-aws-sdk-cpp.cmake)
 # set(AWSSDK_DIR "${CMAKE_BINARY_DIR}/libawscpp-proj")
 # list(APPEND CMAKE_PREFIX_PATH ${AWSSDK_DIR})
-# # TODO(gitbuda): Figure out a way how to combine ExternalProject and find_package
+# # TODO(gitbuda): Figure out a way how to combine ExternalProject and find_package -> NOT POSSIBLE EASILY because find_package is configure-time, ExternalProject is build-time.
 # find_package(AWSSDK REQUIRED COMPONENTS s3)
 # message(STATUS "${AWSSDK_PLATFORM_DEPS} ${AWSSDK_LINK_LIBRARIES}")
-
-include(modules/fetch-aws-sdk-cpp.cmake)
-
-add_executable(aws_example aws.cpp)
-target_link_libraries(aws_example)
 # get_property(target_names DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY BUILDSYSTEM_TARGETS)
 # message(STATUS ${target_names})
+
+include(modules/fetch-aws-sdk-cpp.cmake)
+add_executable(aws_example aws.cpp)
+target_link_libraries(aws_example aws-cpp-sdk-core aws-cpp-sdk-s3)
