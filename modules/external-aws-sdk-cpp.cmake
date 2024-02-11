@@ -4,7 +4,6 @@ else()
   set(AWS_SDK_CPP_GIT_TAG "${AWS_SDK_CPP_GIT_TAG}" CACHE STRING "aws-sd-cpp git tag")
 endif()
 
-# TODO(gitbuda): The issue here is that find_package can't easily be used.
 ExternalProject_Add(libawscpp-proj
     PREFIX          libawscpp-proj
     GIT_REPOSITORY  https://github.com/aws/aws-sdk-cpp.git

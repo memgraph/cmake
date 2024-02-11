@@ -17,9 +17,9 @@ set_project_warnings(project_warnings)
 include(FetchContent)
 include(ExternalProject)
 
-# include(modules/external-boost.cmake)
-# include(modules/external-fmt.cmake)
-# include(modules/external-mgclient.cmake)
+include(modules/external-boost.cmake)
+include(modules/external-fmt.cmake)
+include(modules/external-mgclient.cmake)
 
 include(modules/fetch-nlohmann.cmake)
 add_executable(json_example json.cpp)
@@ -40,16 +40,12 @@ include(modules/external-mgcxx.cmake)
 add_executable(mgcxx_text_search_example mgcxx_text_search.cpp)
 target_link_libraries(mgcxx_text_search_example PRIVATE nlohmann_json::nlohmann_json mgcxx_text_search tantivy_text_search)
 
-# # https://www.jwlawson.co.uk/interest/2020/02/23/cmake-external-project.html
-# # https://coderefinery.github.io/cmake-workshop/fetch-content/
 # include(modules/external-aws-sdk-cpp.cmake)
-# set(AWSSDK_DIR "${CMAKE_BINARY_DIR}/libawscpp-proj")
-# list(APPEND CMAKE_PREFIX_PATH ${AWSSDK_DIR})
-# # TODO(gitbuda): Figure out a way how to combine ExternalProject and find_package -> NOT POSSIBLE EASILY because find_package is configure-time, ExternalProject is build-time.
-# find_package(AWSSDK REQUIRED COMPONENTS s3)
-# message(STATUS "${AWSSDK_PLATFORM_DEPS} ${AWSSDK_LINK_LIBRARIES}")
-# get_property(target_names DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY BUILDSYSTEM_TARGETS)
-# message(STATUS ${target_names})
+# ExternalProject_Get_Property(libawscpp-proj install_dir)
+# set(AWSSDK_DIR ${install_dir})
+# # # NOTE: The following doesn't work smootly -> manual target definition required (similar to mgclient).
+# # list(APPEND CMAKE_PREFIX_PATH ${AWSSDK_DIR})
+# # find_package(AWSSDK REQUIRED COMPONENTS s3)
 
 include(modules/fetch-aws-sdk-cpp.cmake)
 add_executable(aws_example aws.cpp)
