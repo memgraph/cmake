@@ -1,5 +1,9 @@
 # Memgraph CMake
 
+## Hints
+
+To list all targets run `cmake --build . --target help`.
+
 This is a collection of CMake modules that are useful for all Memgraph
 projects.
 
@@ -49,3 +53,6 @@ target_link_libraries({{target}} PRIVATE nlohmann_json::nlohmann_json)
 
 * [CMake Guidelines](https://docs.salome-platform.org/latest/dev/cmake/html/various.html)
 * [FetchContent vs ExternalProject](https://www.scivision.dev/cmake-fetchcontent-vs-external-project)
+  * https://www.jwlawson.co.uk/interest/2020/02/23/cmake-external-project.html
+  * https://coderefinery.github.io/cmake-workshop/fetch-content/
+  * NOTE: It's not easy to combine ExternalProject and find_package because find_package is configure-time, ExternalProject is build-time.

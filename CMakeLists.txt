@@ -17,9 +17,9 @@ set_project_warnings(project_warnings)
 include(FetchContent)
 include(ExternalProject)
 
-# include(modules/external-boost.cmake)
-# include(modules/external-fmt.cmake)
-# include(modules/external-mgclient.cmake)
+include(modules/external-boost.cmake)
+include(modules/external-fmt.cmake)
+include(modules/external-mgclient.cmake)
 
 include(modules/fetch-nlohmann.cmake)
 add_executable(json_example json.cpp)
@@ -39,3 +39,14 @@ include(modules/fetch-nlohmann.cmake)
 include(modules/external-mgcxx.cmake)
 add_executable(mgcxx_text_search_example mgcxx_text_search.cpp)
 target_link_libraries(mgcxx_text_search_example PRIVATE nlohmann_json::nlohmann_json mgcxx_text_search tantivy_text_search)
+
+# include(modules/external-aws-sdk-cpp.cmake)
+# ExternalProject_Get_Property(libawscpp-proj install_dir)
+# set(AWSSDK_DIR ${install_dir})
+# # # NOTE: The following doesn't work smootly -> manual target definition required (similar to mgclient).
+# # list(APPEND CMAKE_PREFIX_PATH ${AWSSDK_DIR})
+# # find_package(AWSSDK REQUIRED COMPONENTS s3)
+
+include(modules/fetch-aws-sdk-cpp.cmake)
+add_executable(aws_example aws.cpp)
+target_link_libraries(aws_example aws-cpp-sdk-core aws-cpp-sdk-s3)
