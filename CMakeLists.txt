@@ -51,6 +51,7 @@ include(ExternalProject)
 # # # list(APPEND CMAKE_PREFIX_PATH ${AWSSDK_DIR})
 # # # find_package(AWSSDK REQUIRED COMPONENTS s3)
 
-include(modules/external-arrow.cmake)
-# add_executable(arrow_example arrow.cpp)
-# target_link_libraries(arrow_example libarrow)
+# include(modules/external-arrow.cmake)
+find_package(Arrow REQUIRED) # https://arrow.apache.org/install/
+add_executable(arrow_example arrow.cpp)
+target_link_libraries(arrow_example PRIVATE Arrow::arrow_shared)

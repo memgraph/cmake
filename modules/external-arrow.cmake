@@ -4,6 +4,8 @@ else()
   set(ARROW_GIT_TAG "${ARROW_GIT_TAG}" CACHE STRING "arrow git tag")
 endif()
 
+# https://github.com/rapidsai/libgdf/blob/master/libgdf/cmake/Templates/Arrow.CMakeLists.txt.cmake
+# https://stackoverflow.com/questions/73935448/installing-and-linking-to-apache-arrow-inside-cmake
 set(ARROW_CMAKE_ARGS
     -DARROW_WITH_LZ4=OFF
     -DARROW_WITH_ZSTD=OFF

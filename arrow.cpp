@@ -1,4 +1,6 @@
 // NOTE: Taken from https://github.com/apache/arrow/blob/main/cpp/examples/minimal_build/example.cc
+// Test file -> https://raw.githubusercontent.com/apache/arrow/main/cpp/examples/minimal_build/test.csv
+// An awesome viewer -> visidata.org
 
 #include <arrow/csv/api.h>
 #include <arrow/io/api.h>
