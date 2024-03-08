@@ -3,13 +3,13 @@ if(NOT DEFINED ARROW_GIT_TAG)
 else()
   set(ARROW_GIT_TAG "${ARROW_GIT_TAG}" CACHE STRING "arrow git tag")
 endif()
-
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
 # https://github.com/rapidsai/libgdf/blob/master/libgdf/cmake/Templates/Arrow.CMakeLists.txt.cmake
 # https://stackoverflow.com/questions/73935448/installing-and-linking-to-apache-arrow-inside-cmake
+# https://github.com/alibaba/GraphAr/blob/main/cpp/cmake/apache-arrow.cmake
 set(ARROW_CMAKE_ARGS
     -DARROW_BUILD_STATIC=ON
     -DARROW_BUILD_SHARED=OFF
