@@ -40,9 +40,10 @@ include(modules/external-mgcxx.cmake)
 add_executable(mgcxx_text_search_example mgcxx_text_search.cpp)
 target_link_libraries(mgcxx_text_search_example PRIVATE nlohmann_json::nlohmann_json mgcxx_text_search tantivy_text_search)
 
-include(modules/fetch-aws-sdk-cpp.cmake)
-add_executable(aws_example aws.cpp)
-target_link_libraries(aws_example aws-cpp-sdk-core aws-cpp-sdk-s3)
+# NOTE: Some build issues on Mac M1, works on Linux.
+# include(modules/fetch-aws-sdk-cpp.cmake)
+# add_executable(aws_example aws.cpp)
+# target_link_libraries(aws_example aws-cpp-sdk-core aws-cpp-sdk-s3)
 
 # include(modules/external-aws-sdk-cpp.cmake)
 # ExternalProject_Get_Property(libawscpp-proj install_dir)
