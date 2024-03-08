@@ -40,6 +40,11 @@ include(modules/external-mgcxx.cmake)
 add_executable(mgcxx_text_search_example mgcxx_text_search.cpp)
 target_link_libraries(mgcxx_text_search_example PRIVATE nlohmann_json::nlohmann_json mgcxx_text_search tantivy_text_search)
 
+# NOTE: Some build issues on Mac M1, works on Linux.
+# include(modules/fetch-aws-sdk-cpp.cmake)
+# add_executable(aws_example aws.cpp)
+# target_link_libraries(aws_example aws-cpp-sdk-core aws-cpp-sdk-s3)
+
 # include(modules/external-aws-sdk-cpp.cmake)
 # ExternalProject_Get_Property(libawscpp-proj install_dir)
 # set(AWSSDK_DIR ${install_dir})
@@ -47,6 +52,8 @@ target_link_libraries(mgcxx_text_search_example PRIVATE nlohmann_json::nlohmann_
 # # list(APPEND CMAKE_PREFIX_PATH ${AWSSDK_DIR})
 # # find_package(AWSSDK REQUIRED COMPONENTS s3)
 
-include(modules/fetch-aws-sdk-cpp.cmake)
-add_executable(aws_example aws.cpp)
-target_link_libraries(aws_example aws-cpp-sdk-core aws-cpp-sdk-s3)
+include(modules/external-arrow.cmake)
+add_executable(arrow_example arrow.cpp)
+target_link_libraries(arrow_example PRIVATE libarrow)
+# find_package(Arrow REQUIRED) # https://arrow.apache.org/install/
+# target_link_libraries(arrow_example PRIVATE Arrow::arrow_shared)
