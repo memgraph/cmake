@@ -57,3 +57,9 @@ add_executable(arrow_example arrow.cpp)
 target_link_libraries(arrow_example PRIVATE libarrow)
 # find_package(Arrow REQUIRED) # https://arrow.apache.org/install/
 # target_link_libraries(arrow_example PRIVATE Arrow::arrow_shared)
+
+include(modules/fetch-usearch.cmake)
+add_executable(vector_search vector_search.cpp)
+target_include_directories(vector_search PRIVATE ${usearch_SOURCE_DIR}/fp16/include)
+target_include_directories(vector_search PRIVATE ${usearch_SOURCE_DIR}/stringzilla/include)
+target_link_libraries(vector_search PRIVATE usearch)
