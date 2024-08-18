@@ -72,6 +72,7 @@ add_executable(vector_search vector_search.cpp)
 add_definitions(-DANNOYLIB_MULTITHREADED_BUILD)
 # faiss
 target_include_directories(vector_search PRIVATE ${annoy_SOURCE_DIR}/src)
+target_include_directories(vector_search PRIVATE /opt/homebrew/opt/libomp/include)
 # usearch
 target_include_directories(vector_search PRIVATE ${usearch_SOURCE_DIR}/fp16/include)
 target_include_directories(vector_search PRIVATE ${usearch_SOURCE_DIR}/stringzilla/include)
