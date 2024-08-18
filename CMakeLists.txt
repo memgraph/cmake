@@ -58,8 +58,11 @@ target_link_libraries(arrow_example PRIVATE libarrow)
 # find_package(Arrow REQUIRED) # https://arrow.apache.org/install/
 # target_link_libraries(arrow_example PRIVATE Arrow::arrow_shared)
 
+include(modules/fetch-annoy.cmake)
 include(modules/fetch-usearch.cmake)
 add_executable(vector_search vector_search.cpp)
 target_include_directories(vector_search PRIVATE ${usearch_SOURCE_DIR}/fp16/include)
 target_include_directories(vector_search PRIVATE ${usearch_SOURCE_DIR}/stringzilla/include)
+add_definitions(-DANNOYLIB_MULTITHREADED_BUILD)
+target_include_directories(vector_search PRIVATE ${annoy_SOURCE_DIR}/src)
 target_link_libraries(vector_search PRIVATE usearch)
