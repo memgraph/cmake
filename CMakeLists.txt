@@ -57,3 +57,23 @@ add_executable(arrow_example arrow.cpp)
 target_link_libraries(arrow_example PRIVATE libarrow)
 # find_package(Arrow REQUIRED) # https://arrow.apache.org/install/
 # target_link_libraries(arrow_example PRIVATE Arrow::arrow_shared)
+
+message(STATUS "Configuring annoy...")
+include(modules/fetch-annoy.cmake)
+message(STATUS "Configuring annoy DONE")
+message(STATUS "Configuring faiss...")
+include(modules/wip-fetch-faiss.cmake)
+message(STATUS "Configuring faiss DONE")
+message(STATUS "Configuring usearch...")
+include(modules/fetch-usearch.cmake)
+message(STATUS "Configuring usearch DONE")
+add_executable(vector_search vector_search.cpp)
+# annoy
+add_definitions(-DANNOYLIB_MULTITHREADED_BUILD)
+# faiss
+target_include_directories(vector_search PRIVATE ${annoy_SOURCE_DIR}/src)
+target_include_directories(vector_search PRIVATE /opt/homebrew/opt/libomp/include)
+# usearch
+target_include_directories(vector_search PRIVATE ${usearch_SOURCE_DIR}/fp16/include)
+target_include_directories(vector_search PRIVATE ${usearch_SOURCE_DIR}/stringzilla/include)
+target_link_libraries(vector_search PRIVATE usearch faiss)

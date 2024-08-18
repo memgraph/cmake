@@ -56,4 +56,5 @@ target_link_libraries({{target}} PRIVATE nlohmann_json::nlohmann_json)
 * [FetchContent vs ExternalProject](https://www.scivision.dev/cmake-fetchcontent-vs-external-project)
   * https://www.jwlawson.co.uk/interest/2020/02/23/cmake-external-project.html
   * https://coderefinery.github.io/cmake-workshop/fetch-content/
-  * NOTE: It's not easy to combine ExternalProject and find_package because find_package is configure-time, ExternalProject is build-time.
+  * NOTE: It's not easy to combine ExternalProject and find_package because find_package is configure-time, ExternalProject is build-time
+  * NOTE: CMAKE_ARGS does NOT work under FetchContent.
