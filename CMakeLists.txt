@@ -114,8 +114,9 @@ endif()
 if(MGCMAKE_BUILD_FAISS)
   include(modules/fetch-faiss.cmake)
   add_executable(vs_faiss vs_faiss.cpp)
-  # TODO(gitbuda): Make linking of libomp generic.
-  target_include_directories(vs_faiss PRIVATE /opt/homebrew/opt/libomp/include)
+  if(APPLE) # NOTE: Assumes that libomp was installed using brew under /opt
+    target_include_directories(vs_faiss PRIVATE /opt/homebrew/opt/libomp/include)
+  endif()
   target_link_libraries(vs_faiss PRIVATE faiss)
 endif()
 
