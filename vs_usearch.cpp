@@ -1,5 +1,6 @@
 #include <cstdint>
 #include <iostream>
+#include <thread>
 
 // CPP: https://github.com/unum-cloud/usearch/tree/main/cpp
 // REF: https://unum-cloud.github.io/usearch/cpp/reference.html
@@ -40,17 +41,26 @@ void run_usearch() {
   using mg_key_t = mg_tx_data_t;
   using mg_vector_index_t = index_dense_gt<mg_key_t, uint40_t>;
   mg_vector_index_t index = mg_vector_index_t::make(metric);
-  index.reserve(10);
-  for (int i = 0; i < 10; ++i) {
+  // std::mt19937 rng;
+  // std::uniform_real_distribution<> distrib;
+  index.reserve(1000000);
+  for (int i = 0; i < 1000000; ++i) {
     std::vector<float> vec(1000, 0.0);
     for (int j = 0; j < 1000; ++j) {
-      vec[j] = i + j;
+      // vec[j] = i + j;
+      vec[j] = distrib(rng);
     }
     // index.add(i, vec.data());
     // index.add(std::make_pair(i, i), vec.data());
     // index.add("key" + std::to_string(i), vec.data());
     index.add(mg_tx_data_t{.gid = (uint64_t)i, .tx = 0, .cmd = 0}, vec.data());
+    // NOTE: At 100k of vector of size 1000, RES was ~410MB (on M1).
+    if (i != 0 && i % 10000 == 0) {
+      std::cout << 10000 << " of more vectors added. Now " << i << " vectors are indexed" << std::endl;
+    }
   }
+  std::cout << "Index created." << std::endl;
+  std::this_thread::sleep_for (std::chrono::seconds(100));
 
   std::vector<float> vec(1000, 0.0);
   for (int j = 0; j < 1000; ++j) {
