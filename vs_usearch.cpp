@@ -55,6 +55,7 @@ void run_usearch() {
     // index.add("key" + std::to_string(i), vec.data());
     index.add(mg_tx_data_t{.gid = (uint64_t)i, .tx = 0, .cmd = 0}, vec.data());
     // NOTE: At 100k of vector of size 1000, RES was ~410MB (on M1).
+    // TODO(gitbuda): Estimate/figure_out ratio between in-memory data structure vs raw size of the vectors.
     if (i != 0 && i % 10000 == 0) {
       std::cout << 10000 << " of more vectors added. Now " << i << " vectors are indexed" << std::endl;
     }
