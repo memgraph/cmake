@@ -5,6 +5,8 @@
 #include <exec/task.hpp>
 #include <stdexec/execution.hpp>
 
+// NOTE: 2024-09-07 std::generator is only libstdc++
+
 using namespace stdexec;
 using stdexec::sync_wait;
 
@@ -104,12 +106,82 @@ void cancel() {
   canceller.join();
 }
 
-auto get_batch(int how_many) {
-  std::vector data(10, 1);
-  return data; // co_yield and co_return
-}
+template <typename T> struct generator {
+  struct promise_type {
+    T current_value;
+    using coroutine_handle = std::coroutine_handle<promise_type>;
+    generator get_return_object() {
+      return generator{coroutine_handle::from_promise(*this)};
+    }
+    std::suspend_always initial_suspend() const noexcept { return {}; }
+    std::suspend_always final_suspend() const noexcept { return {}; }
+    std::suspend_always yield_value(T value) noexcept {
+      current_value = value;
+      return {};
+    }
+    void return_void() noexcept {}
+    void unhandled_exception() { std::terminate(); }
+  };
+  using coroutine_handle = std::coroutine_handle<promise_type>;
+  generator(coroutine_handle h) : coro_handle(h) {}
+  ~generator() {
+    if (coro_handle) {
+      coro_handle.destroy();
+    }
+  }
+  generator(const generator &) = delete;
+  generator &operator=(const generator &) = delete;
+  generator(generator &&other) noexcept : coro_handle(other.coro_handle) {
+    other.coro_handle = nullptr;
+  }
+  generator &operator=(generator &&other) noexcept {
+    if (this != &other) {
+      if (coro_handle) {
+        coro_handle.destroy();
+      }
+      coro_handle = other.coro_handle;
+      other.coro_handle = nullptr;
+    }
+    return *this;
+  }
+  bool move_next() {
+    if (!coro_handle.done()) {
+      coro_handle.resume();
+    }
+    return !coro_handle.done();
+  }
+  T current_value() const { return coro_handle.promise().current_value; }
 
-void batch() {}
+private:
+  coroutine_handle coro_handle;
+};
+
+void batch() {
+  exec::static_thread_pool pool{8};
+  auto scheduler = pool.get_scheduler();
+
+  auto begin = schedule(scheduler);
+  auto task0 = then(std::move(begin), []() { return 10; });
+  auto task1 =
+      then(std::move(task0), [](int batch_size) -> generator<std::vector<int>> {
+        for (int i = 0; i < batch_size; ++i) {
+          co_yield std::vector<int>(batch_size, i);
+        }
+      });
+  auto task2 = then(std::move(task1), [](generator<std::vector<int>> gen) {
+    int sum = 0;
+    while (gen.move_next()) {
+      // NOTE: This is most likely making vector copy!
+      auto batch = gen.current_value();
+      for (const auto &value : batch) {
+        sum += value;
+      }
+    }
+    return sum;
+  });
+  auto [i] = sync_wait(std::move(task2)).value();
+  std::cout << "Sum of all values: " << i << "\n";
+}
 
 int main() {
   basic();
