@@ -1,6 +1,7 @@
 #include "stdexec/__detail/__execution_fwd.hpp"
 #include <iostream>
 
+#include <exec/async_scope.hpp>
 #include <exec/static_thread_pool.hpp>
 #include <exec/task.hpp>
 #include <stdexec/execution.hpp>
@@ -183,10 +184,50 @@ void batch() {
   std::cout << "Sum of all values: " << i << "\n";
 }
 
+void scope() {
+  std::cout << "main start" << std::endl;
+  exec::static_thread_pool pool{8};
+  exec::async_scope scope;
+  auto scheduler = pool.get_scheduler();
+  auto begin = schedule(scheduler);
+
+  auto printFast = then(begin, []() noexcept {
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    printf("fast\n");
+  });
+
+  auto dataFast = then(begin, []() noexcept {
+    std::cout << "data fast start\n";
+    return 42;
+  });
+  auto dataFastFuture = scope.spawn_future(dataFast);
+  // TODO(gitbuda): Try to combine with the the coroutines.
+  auto dataAndPrintFast =
+      then(std::move(dataFastFuture), [](int data) noexcept {
+        std::cout << "data print " << data << "\n";
+      });
+
+  auto printSlow = then(begin, []() noexcept {
+    printf("slow start\n");
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    printf("slow end\n");
+  });
+
+  std::cout << "main before spawn" << std::endl;
+  scope.spawn(printFast);
+  scope.spawn(std::move(printFast));
+  scope.spawn(printSlow);
+  scope.spawn(std::move(dataAndPrintFast));
+  std::cout << "main after spawn" << std::endl;
+  sync_wait(scope.on_empty());
+  std::cout << "main end" << std::endl;
+}
+
 int main() {
   basic();
   coro();
   cancel();
   batch();
+  scope();
   return 0;
 }
